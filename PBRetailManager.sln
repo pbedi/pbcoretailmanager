@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBDatManager", "PBDatManager\PBDatManager.csproj", "{D0D72F4B-2E29-4C6B-8FC9-8C28906933BA}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PBRMData", "PBRMData\PBRMData.sqlproj", "{B80038E3-AC21-4BF5-94BD-CB32F7A80FB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBRMDesktopUI", "PBRMDesktopUI\PBRMDesktopUI.csproj", "{2599C70D-F8BE-4E01-8C31-1B36262D0006}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,16 @@ Global
 		{D0D72F4B-2E29-4C6B-8FC9-8C28906933BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0D72F4B-2E29-4C6B-8FC9-8C28906933BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0D72F4B-2E29-4C6B-8FC9-8C28906933BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B80038E3-AC21-4BF5-94BD-CB32F7A80FB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B80038E3-AC21-4BF5-94BD-CB32F7A80FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B80038E3-AC21-4BF5-94BD-CB32F7A80FB0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B80038E3-AC21-4BF5-94BD-CB32F7A80FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B80038E3-AC21-4BF5-94BD-CB32F7A80FB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B80038E3-AC21-4BF5-94BD-CB32F7A80FB0}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{2599C70D-F8BE-4E01-8C31-1B36262D0006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2599C70D-F8BE-4E01-8C31-1B36262D0006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2599C70D-F8BE-4E01-8C31-1B36262D0006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2599C70D-F8BE-4E01-8C31-1B36262D0006}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
