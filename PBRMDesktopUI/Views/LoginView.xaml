@@ -18,24 +18,31 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 0 0 20"
                    HorizontalAlignment="Center" FontSize="48" FontFamily="Sego UI Light" >
             Login Form
         </TextBlock>
+        <!-- Error block -->
+        <TextBlock x:Name="ErrorMessage" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 0 0 20" 
+                   Visibility="{Binding IsErrorVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"
+                   HorizontalAlignment="Center" FontSize="20" FontFamily="Sego UI Light" MaxWidth="450" Foreground="Red" TextWrapping="Wrap" >
+            
+        </TextBlock>
         <!-- Username row -->
-        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0 0 0 10">
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 0 5 10">
             Username:
         </TextBlock>
-        <TextBox x:Name="UserName" Grid.Row="1" Grid.Column="2" MinWidth="150"  Margin="0 0 0 10" />
+        <TextBox x:Name="UserName" Grid.Row="2" Grid.Column="2" MinWidth="350"  Margin="0 0 0 10" />
         <!-- Password row -->
-        <TextBlock Grid.Row="2" Grid.Column="1" Margin="0 0 0 10">
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin="0 0 5 10">
             Password:
         </TextBlock>
-        <PasswordBox x:Name="Password" Grid.Row="2" Grid.Column="2" MinWidth="150"  Margin="0 0 0 10" />
+        <PasswordBox x:Name="Password" Grid.Row="3" Grid.Column="2" MinWidth="350"  Margin="0 0 0 10" />
         <!-- Login Button row-->
-        <Button Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Padding="20 5"
+        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Padding="20 5"
                 HorizontalAlignment="Center" x:Name="LoginBtn" Click="LoginBtn_Click">
             Log In
         </Button>
