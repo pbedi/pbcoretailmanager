@@ -1,7 +1,7 @@
 ﻿using PBRMDesktopUI.Models;
 using System.Threading.Tasks;
 
-namespace PBRMDesktopUI.Helper
+namespace PBDesktopUI.Library.Api
 {
     public interface IAPIHelper
     {
