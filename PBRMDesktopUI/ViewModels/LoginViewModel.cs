@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using PBRMDesktopUI.Helper;
+using PBDesktopUI.Library.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,7 +75,7 @@ namespace PBRMDesktopUI.ViewModels
                 ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
                 // Capture more information about the user
-
+                await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
             }
             catch (Exception ex)
             {

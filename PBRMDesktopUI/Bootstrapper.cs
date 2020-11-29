@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using PBDesktopUI.Library.Api;
+using PBDesktopUI.Library.Models;
 using PBRMDesktopUI.Helper;
 using PBRMDesktopUI.ViewModels;
 using System;
@@ -32,6 +34,7 @@ namespace PBRMDesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<IAPIHelper, APIHelper>();
 
             GetType().Assembly.GetTypes()
