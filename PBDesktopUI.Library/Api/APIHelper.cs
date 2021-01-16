@@ -12,8 +12,16 @@ namespace PBDesktopUI.Library.Api
 {
     public class APIHelper : IAPIHelper
     {
-        private HttpClient httpClient;
+        private HttpClient _httpClient;
         private ILoggedInUserModel _loggedInUser;
+
+        public HttpClient ApiClient
+        {
+            get
+            {
+                return _httpClient;
+            }
+        }
 
         public APIHelper(ILoggedInUserModel loggedInUser)
         {
@@ -23,10 +31,10 @@ namespace PBDesktopUI.Library.Api
         private void InitializeClient()
         {
             string api = ConfigurationManager.AppSettings.Get("api");
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(api);
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri(api);
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders
                 .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         }
@@ -40,7 +48,7 @@ namespace PBDesktopUI.Library.Api
                 new KeyValuePair<string, string>("password", password)
             });
 
-            using (HttpResponseMessage response = await httpClient.PostAsync("/Token", data))
+            using (HttpResponseMessage response = await _httpClient.PostAsync("/Token", data))
             {
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,13 +64,13 @@ namespace PBDesktopUI.Library.Api
 
         public async Task GetLoggedInUserInfo(string token)
         {
-            httpClient.DefaultRequestHeaders.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders
                 .Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { token }");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { token }");
 
-            using (HttpResponseMessage response = await httpClient.GetAsync("/api/User"))
+            using (HttpResponseMessage response = await _httpClient.GetAsync("/api/User"))
             {
                 if (response.IsSuccessStatusCode)
                 {
