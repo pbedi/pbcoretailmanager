@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using PBDesktopUI.Library.Api;
+using PBDesktopUI.Library.Helpers;
 using PBDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
@@ -14,15 +15,15 @@ namespace PBRMDesktopUI.ViewModels
     {
         private BindingList<ProductModel> _products;
 
-        private int _itemQuantity;
-
-        private BindingList<ProductModel> _cart;
+        private int _itemQuantity = 1;
 
         IProductEndpoint _productEndpoint;
+        IConfigHelper _configHelper;
 
-        public SalesViewModel(IProductEndpoint productEndpoint)
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
         {
             _productEndpoint = productEndpoint;
+            _configHelper = configHelper;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -54,10 +55,13 @@ namespace PBRMDesktopUI.ViewModels
             { 
                 _itemQuantity = value;
                 NotifyOfPropertyChange(() => ItemQuantity);
+                NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
 
-        public BindingList<ProductModel> Cart
+        private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
+
+        public BindingList<CartItemModel> Cart
         {
             get { return _cart; }
             set 
@@ -67,12 +71,38 @@ namespace PBRMDesktopUI.ViewModels
             }
         }
 
+        private ProductModel _selectedProduct;
+
+        public ProductModel  SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set 
+            { 
+                _selectedProduct = value;
+                NotifyOfPropertyChange(() => SelectedProduct);
+                NotifyOfPropertyChange(() => CanAddToCart);
+            }
+        }
+
+        private decimal CalculateTax()
+        {
+            decimal taxAmount = 0;
+            decimal taxRate = _configHelper.GetTaxRate();
+
+            foreach (var item in Cart)
+            {
+                if (item.Product.IsTaxable)
+                {
+                    taxAmount += (item.Product.RetailPrice * item.QuantityInCart * taxRate) / 100;
+                }
+            }
+            return taxAmount;
+        }
         public string Tax
         {
             get 
-            { 
-                //TODO - Return with a calculated value
-                return "£0.00"; 
+            {
+                return CalculateTax().ToString("C");
             }
         }
 
@@ -80,8 +110,7 @@ namespace PBRMDesktopUI.ViewModels
         {
             get
             {
-                //TODO - Return with a calculated value
-                return "£0.00";
+                return (CalculateSubTotal() + CalculateTax()).ToString("C");
             }
         }
 
@@ -89,9 +118,20 @@ namespace PBRMDesktopUI.ViewModels
         {
             get
             {
-                //TODO - Return with a calculated value
-                return "£0.00";
+                return CalculateSubTotal().ToString("C");
             }
+        }
+
+        private decimal CalculateSubTotal()
+        {
+            decimal subtotal = 0;
+
+            foreach (var item in Cart)
+            {
+                subtotal += (item.Product.RetailPrice * item.QuantityInCart);
+            }
+
+            return subtotal;
         }
 
 
@@ -102,13 +142,37 @@ namespace PBRMDesktopUI.ViewModels
                 bool output = false;
                 //Make sure something is selected
                 //Make sure quantity is available
-
+                if(ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity)
+                {
+                    output = true;
+                }
                 return output;
             }
         }
         public void AddToCart()
         {
-
+            CartItemModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
+            if (existingItem != null)
+            {
+                existingItem.QuantityInCart += ItemQuantity;
+                Cart.Remove(existingItem);
+                Cart.Add(existingItem);
+            }
+            else
+            {
+                CartItemModel item = new CartItemModel
+                {
+                    Product = SelectedProduct,
+                    QuantityInCart = ItemQuantity
+                };
+                Cart.Add(item);
+            }
+            
+            SelectedProduct.QuantityInStock -= ItemQuantity;
+            ItemQuantity = 1;
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanRemoveFromCart
@@ -123,7 +187,9 @@ namespace PBRMDesktopUI.ViewModels
         }
         public void RemoveFromCart()
         {
-
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
 
         public bool CanCheckout
